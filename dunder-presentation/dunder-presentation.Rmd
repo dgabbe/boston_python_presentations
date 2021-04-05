@@ -1,0 +1,142 @@
+---
+title: "Top 10 Dunders to Make Python Programming Easier"
+author: "David Gabbé"
+date: "4/2/2021"
+output: ioslides_presentation
+#output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("reticulate")
+use_virtualenv("~/_git/_python/python_study_group/dev/")
+numpy <- import("numpy")
+py_config()
+# Need to create requirements file for study group & include numpy!
+```
+
+
+## Disclaimer
+
+- Former colleagues Ned & Rick
+- It was fun
+
+## My background
+
+- Builder, Maker, Fabricator, you name it
+- I learned Python on a dare
+- Learn by doing
+
+## Progamming Languages
+
+ add photo of saw collection
+
+## Defining 'dunder':
+
+- BNF notation: '\_\_'lowercase-alphachars'\_\_'
+- Part of Python's internal machinery
+- Invisible
+- Exposed to make Python programming easier
+	
+## Example 1: Shell Scripting
+
+```{python example-1, eval=FALSE}
+if __name__ == "__main__":
+    main()
+else:
+    print("    ** Did not plan on being imported **", file=stderr)
+```
+> - Python needs to know which function to call first if there are multiple functions in a file.
+
+> - `__name__`: Built-in variable that evaluates to the name of the current module.
+
+> - `__main__`: The name of a module when it's read from standard input, a script, or from an interactive prompt.
+
+> - Main is the unindented level of code
+
+## main() is Your Table of Contents
+
+- Take advantage of structure to help understand someone else's code.
+- [Github.com/dgabbe/link-installer](https://github.com/dgabbe/link-installer/blob/master/link-installer.py)
+
+## Example 2: Iteration
+
+```{python iterables, eval=TRUE}
+fruits = ['apple', 'banana', 'cherry', 'date']
+for f in fruits:
+    print(f)
+
+```
+
+Why is it so wonderful & why does this work?
+
+## A Lesson from C
+
+```
+for ( i=0; i<len(fruits); i++ ) {
+   print(fruit[i]);
+}
+```
+
+Compared to 
+
+```{python, eval=FALSE}
+for f in fruits:
+    print(f)
+```
+> - Dunders are invisible
+
+> - Dunders do lots of work for you
+
+> - Dunders make your intentions clear
+
+## Iteration con't
+
+- Able to print out the fruits list because Python gave us for free a mechanism for iteration over a list.
+
+> - Python objects have attributes
+> - The attribute that makes an object iterable is '\_\_iter\_\_'
+
+## Invisible Dunder World Tour {.build}
+
+- What is `fruits`?
+
+```{python}
+type(fruits)
+```
+
+- Does it have the `__iter__` attribute?
+```{python}
+hasattr(fruits, '__iter__')
+```
+
+## Tour (con't) {.build}
+
+- How many attributes does it have?
+```{python}
+len(dir(fruits))
+```
+
+## Tour (con't, 2) {.build}
+
+- What are all of `fruits` attributes?
+```{python}
+from textwrap import fill
+print(fill(repr(dir(fruits)), width=70))
+```
+
+## Dunders to add
+
+__doc__,  __repr__,  __str__, __builtins__, mutables
+
+## References
+
+- Python documentation
+- Need to refer to Python language reference <<add url here>>
+- Helpful blog articles
+
+## Contact Info
+
+- linked in
+- email
+
