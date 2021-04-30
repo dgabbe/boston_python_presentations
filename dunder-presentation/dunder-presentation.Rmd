@@ -1,5 +1,5 @@
 ---
-title: "Top 10 Dunders to Make Python Programming Easier"
+title: '\_\_dunders\_\_, Part 1'
 author: "David Gabbé"
 date: "4/2/2021"
 output: ioslides_presentation
@@ -9,7 +9,7 @@ output: ioslides_presentation
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("reticulate")
-use_virtualenv("~/_git/_python/python_study_group/dev/")
+use_virtualenv("~/_git/_python/boston_python_study_group/dev/")
 numpy <- import("numpy")
 py_config()
 # Need to create requirements file for study group & include numpy!
@@ -37,6 +37,13 @@ py_config()
 - Part of Python's internal machinery
 - Invisible
 - Exposed to make Python programming easier
+
+## Dunders Covered
+
+- __Scripting:__ \_\_main\_\_, \_\_name\_\_
+- __Iteration:__ \_\_iter\_\_, \_\_len\_\_
+- __Tools:__ \_\_dict\_\_, \_\_doc\_\_, \_\_repr\_\_, \_\_str\_\_
+- __Programming:__ \_\_add\_\_
 	
 ## Example 1: Shell Scripting
 
@@ -47,12 +54,9 @@ else:
     print("    ** Did not plan on being imported **", file=stderr)
 ```
 > - Python needs to know which function to call first if there are multiple functions in a file.
-
 > - `__name__`: Built-in variable that evaluates to the name of the current module.
-
 > - `__main__`: The name of a module when it's read from standard input, a script, or from an interactive prompt.
-
-> - Main is the unindented level of code
+> - When the command to run a python program is given to the interpreter, the code that is at level 0 indentation is to be executed. 
 
 ## main() is Your Table of Contents
 
@@ -73,6 +77,7 @@ Why is it so wonderful & why does this work?
 ## A Lesson from C
 
 ```
+int i;
 for ( i=0; i<len(fruits); i++ ) {
    print(fruit[i]);
 }
@@ -85,14 +90,12 @@ for f in fruits:
     print(f)
 ```
 > - Dunders are invisible
-
 > - Dunders do lots of work for you
-
 > - Dunders make your intentions clear
 
 ## Iteration con't
 
-- Able to print out the fruits list because Python gave us for free a mechanism for iteration over a list.
+- Able to print `fruits` because Python provides a list iteration mechanism.
 
 > - Python objects have attributes
 > - The attribute that makes an object iterable is '\_\_iter\_\_'
@@ -110,14 +113,37 @@ type(fruits)
 hasattr(fruits, '__iter__')
 ```
 
-## Tour (con't) {.build}
+## Dunders Support Built-in Functions | A worthwhile side trip
 
-- How many attributes does it have?
+- `object.__len__(self)`: Called to implement the __built-in function len()__. Should return the length of the object, an integer >= 0. Also, an object that doesn’t define a __bool__() method and whose __len__() method returns zero is considered to be false in a Boolean context.
+
+!!! Add reference for this text !!!
+
+## Example: `len`
+
+```{python}
+fruits = ['apple', 'banana', 'cherry', 'date']
+len(fruits)
+fruits.__len__()
+```
+
+## `len` con't
+
+```{python}
+len(list())
+list().__len__()
+for l in [[], list(), fruits]:
+    print(f'{l!r}: {len(l)}, {l.__len__()}')
+```
+## Invisible Dunder World Tour (con't) {.build}
+
+- How many attributes does `fruits` have?
 ```{python}
 len(dir(fruits))
 ```
 
-## Tour (con't, 2) {.build}
+
+## Invisible Dunder World Tour (con't, 2) {.build}
 
 - What are all of `fruits` attributes?
 ```{python}
@@ -125,18 +151,45 @@ from textwrap import fill
 print(fill(repr(dir(fruits)), width=70))
 ```
 
-## Dunders to add
+## Example 3: Tools | `__doc__`
 
-__doc__,  __repr__,  __str__, __builtins__, mutables
+- `object.__repr__(self)`
+
+```{python}
+print(repr.__doc__)
+```
+
+
+```{python, eval=FALSE}
+print(fill((dir(fruits), width=70))
+SyntaxError: invalid syntax (<string>, line 1)
+```
+
+## Tools | `__repr__`
+
+- Get help quickly
+- Tools may provide hints using this dunder
+
+> - Dunders can be a method or an attribute
+
+## `__str__` vs `__repr__`
+
+## Tools | `__dict__`
+
+`print(object_name_w_variable.__dict__)`
+
+## Example 4: OO Programming | `__add__`
 
 ## References
 
 - Python documentation
 - Need to refer to Python language reference <<add url here>>
 - Helpful blog articles
+- Emily Charles' [Iterables 101 study lesson](https://docs.google.com/presentation/d/1LOrKFvnJMBusEpSGV4Byeisizb-UAQ1RItijpxwr-yk/edit#slide=id.gc570588ca1_0_134)
 
-## Contact Info
+## Stay In Touch
 
-- linked in
-- email
+- https://www.linkedin.com/in/davidgabbe
+- dgabbe@gmail.com
+- https://github/com/dgabbe
 
