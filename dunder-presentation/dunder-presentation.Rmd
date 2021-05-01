@@ -34,9 +34,9 @@ py_config()
 ## Defining 'dunder':
 
 - BNF notation: '\_\_'lowercase-alphachars'\_\_'
+- Nominally invisible
 - Part of Python's internal machinery
-- Invisible
-- Exposed to make Python programming easier
+- Accessible to make Python programming easier
 
 ## Dunders Covered
 
@@ -45,7 +45,7 @@ py_config()
 - __Tools:__ \_\_dict\_\_, \_\_doc\_\_, \_\_repr\_\_, \_\_str\_\_
 - __Programming:__ \_\_add\_\_
 	
-## Example 1: Shell Scripting
+## Scripting | Shell Scripting
 
 ```{python example-1, eval=FALSE}
 if __name__ == "__main__":
@@ -58,12 +58,12 @@ else:
 > - `__main__`: The name of a module when it's read from standard input, a script, or from an interactive prompt.
 > - When the command to run a python program is given to the interpreter, the code that is at level 0 indentation is to be executed. 
 
-## main() is Your Table of Contents
+## Scripting | main() is Your Table of Contents
 
 - Take advantage of structure to help understand someone else's code.
 - [Github.com/dgabbe/link-installer](https://github.com/dgabbe/link-installer/blob/master/link-installer.py)
 
-## Example 2: Iteration
+## Iteration | Quick review
 
 ```{python iterables, eval=TRUE}
 fruits = ['apple', 'banana', 'cherry', 'date']
@@ -74,7 +74,7 @@ for f in fruits:
 
 Why is it so wonderful & why does this work?
 
-## A Lesson from C
+## Iteration | A Lesson from C
 
 ```
 int i;
@@ -93,14 +93,14 @@ for f in fruits:
 > - Dunders do lots of work for you
 > - Dunders make your intentions clear
 
-## Iteration con't
+## Iteration | Con't
 
 - Able to print `fruits` because Python provides a list iteration mechanism.
 
 > - Python objects have attributes
 > - The attribute that makes an object iterable is '\_\_iter\_\_'
 
-## Invisible Dunder World Tour {.build}
+## Iteration | Deeper dive {.build}
 
 - What is `fruits`?
 
@@ -113,13 +113,14 @@ type(fruits)
 hasattr(fruits, '__iter__')
 ```
 
-## Dunders Support Built-in Functions | A worthwhile side trip
+## Iteration | Dunders Support Built-in Functions
 
-- `object.__len__(self)`: Called to implement the __built-in function len()__. Should return the length of the object, an integer >= 0. Also, an object that doesn’t define a __bool__() method and whose __len__() method returns zero is considered to be false in a Boolean context.
+- `object.__len__(self)`: Called to implement the __built-in function len()__. Should return the length of the object, an integer >= 0. Also, an object that doesn’t define a __bool__() method and whose __len__() method returns zero is considered to be false in a Boolean context.^1^
 
-!!! Add reference for this text !!!
 
-## Example: `len`
+^1^https://docs.python.org/3/reference/datamodel.html
+
+## Iteration | `len`
 
 ```{python}
 fruits = ['apple', 'banana', 'cherry', 'date']
@@ -127,7 +128,7 @@ len(fruits)
 fruits.__len__()
 ```
 
-## `len` con't
+## Iteration | `len` con't
 
 ```{python}
 len(list())
@@ -135,7 +136,7 @@ list().__len__()
 for l in [[], list(), fruits]:
     print(f'{l!r}: {len(l)}, {l.__len__()}')
 ```
-## Invisible Dunder World Tour (con't) {.build}
+## Tools {.build}
 
 - How many attributes does `fruits` have?
 ```{python}
@@ -143,7 +144,7 @@ len(dir(fruits))
 ```
 
 
-## Invisible Dunder World Tour (con't, 2) {.build}
+## Tools {.build}
 
 - What are all of `fruits` attributes?
 ```{python}
@@ -151,7 +152,7 @@ from textwrap import fill
 print(fill(repr(dir(fruits)), width=70))
 ```
 
-## Example 3: Tools | `__doc__`
+## Tools | `__doc__`
 
 - `object.__repr__(self)`
 
@@ -172,19 +173,94 @@ SyntaxError: invalid syntax (<string>, line 1)
 
 > - Dunders can be a method or an attribute
 
-## `__str__` vs `__repr__`
+## Tools | `__str__` vs `__repr__`
 
 ## Tools | `__dict__`
 
-`print(object_name_w_variable.__dict__)`
+```{python, eval=FALSE}
+print(fruits.__dict__)
+```
 
-## Example 4: OO Programming | `__add__`
+- `fruits` doesn't have a `__dict__` attribute
+
+> - Don't give up...
+
+
+## Programming | Repeat Using a Class
+
+https://github.com/dgabbe/boston_python_presentations/dunder-presentation/code/dog.py
+
+```{python, eval=TRUE, echo=FALSE}
+class TT:
+    """Tibetan Terrier fun facts."""
+    coat = '2 layers of hair'
+
+    def __init__(self, name: str, vocab: list, toy: str, sex: str):
+        self.name = name
+        self.vocab = vocab
+        self.favorite_toy = toy
+        self.sex = sex
+
+    def __repr__(self):
+        indent = "  "
+        r = str()
+        for key, value in self.__dict__.items():
+            r += indent + key + ": " + repr(value) + "\n"
+        return r
+
+    def __str__(self):
+        return self.name
+
+```
+
+![](./images/harley.jpeg){height=35%, width=35%}
+
+## Programming | Harley as code
+
+```{python, eval=TRUE, echo-TRUE}
+harley = TT(
+    "Harley",
+    ["sit", "come", "down", "drop it", "no bite", "heel", 'paw'],
+    "heart toy",
+    sex="female",
+)
+```
+
+## Programming | `__str__` & `__repr__`
+
+```{python error=TRUE}
+print(str(harley))
+print(repr(harley))
+```
+
+## Programming | `__dir__` & `__dict__`
+
+```{python error=TRUE}
+print(fill(repr(dir(harley))))
+print(fill(repr(harley.__dict__)))
+```
+
+
+## Programming | `set` Tip
+
+```{python}
+print(fill(repr(set(dir(harley)) - set(dir(object)))))
+```
+
+
+## Programming | `__doc__`
+
+```{python}
+print(harley.__doc__)
+```
+
+
+## Programming | `__add__`
 
 ## References
 
-- Python documentation
-- Need to refer to Python language reference <<add url here>>
-- Helpful blog articles
+- [Python Data Model](https://docs.python.org/3/reference/datamodel.html)
+- [Python Builtin Functions](https://docs.python.org/3/library/functions.html)
 - Emily Charles' [Iterables 101 study lesson](https://docs.google.com/presentation/d/1LOrKFvnJMBusEpSGV4Byeisizb-UAQ1RItijpxwr-yk/edit#slide=id.gc570588ca1_0_134)
 
 ## Stay In Touch
