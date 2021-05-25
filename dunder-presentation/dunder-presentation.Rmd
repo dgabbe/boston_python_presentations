@@ -246,6 +246,12 @@ print(fill(repr(harley.__dict__)))
 ```{python}
 print(fill(repr(set(dir(harley)) - set(dir(object)))))
 ```
+```{python}
+print(fill(repr(dir(harley).keys() - dir(object).keys())))
+```
+Think about this code:
+unique_to_harley_attributes = set(dir(harley)) - set(dir(object))
+print(fill(repr(unique_to_harley_attributes)))
 
 
 ## Programming | `__doc__`
@@ -256,6 +262,16 @@ print(harley.__doc__)
 
 
 ## Programming | `__add__`
+
+## Review
+
+Ask for volunteer to list one thing they learned
+
+- Mutliple ways to access an attribute
+- Write own class, need to supply functions to get the free stuff
+- There are many many dunders than you think
+- Dunders gateway to using/understanding Python object system
+- Focus on intentions & not underlying implementation details
 
 ## References
 
